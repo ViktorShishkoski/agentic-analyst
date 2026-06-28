@@ -1,0 +1,53 @@
+# Node.js
+**/node_modules/
+**/npm-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Environment Variables & Secrets
+**/.env
+**/.env.local
+**/.env.*.local
+**/credentials.json
+**/token.json
+**/*.pem
+**/*.key
+
+# Python
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/.pytest_cache/
+**/.venv/
+**/venv/
+**/env/
+
+# R
+**/.Rhistory
+**/.RData
+**/.Ruserdata
+
+# Backend Temporary Plots & Workspaces
+backend/public/temp_plots/
+backend/plot_output.png
+backend/analysis_output.json
+backend/plot_config.json
+backend/output_docker.json
+backend/test_plot_output.png
+backend/tmp/
+backend/scratch/
+backend/output/
+**/scratch_*.js
+
+# Frontend Build & Logs
+frontend/dist/
+frontend/dist-ssr/
+frontend/logs/
+*.log
+
+# IDEs & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

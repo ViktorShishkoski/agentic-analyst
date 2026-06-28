@@ -1,0 +1,9 @@
+pandas
+matplotlib
+seaborn
+pymongo
+scipy
+scikit-learn
+statsmodels
+prophet
+pyod

@@ -1,0 +1,29 @@
+[
+  {
+    "name": "csv-ingestion-and-profiling",
+    "prompt": "Ingest the sales data CSV from uploads and profile its column types.",
+    "expected_outputs": [
+      "Detected format: csv",
+      "Columns: Date, Amount, Product, Region",
+      "Amount inferred as numeric",
+      "Product inferred as categorical"
+    ]
+  },
+  {
+    "name": "plotly-chart-rendering",
+    "prompt": "Generate a horizontal bar chart showing sales amount by product.",
+    "expected_outputs": [
+      "SUCCESS: Plot generated successfully",
+      "Saved to public/temp_plots/plot_",
+      "Orientation: h"
+    ]
+  },
+  {
+    "name": "excel-report-export",
+    "prompt": "Export the summarized sales metrics as an Excel report with formatted headers.",
+    "expected_outputs": [
+      "SUCCESS: Exported Excel",
+      "Using openpyxl formatting"
+    ]
+  }
+]

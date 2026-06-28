@@ -1,0 +1,13 @@
+node_modules
+__pycache__
+.env
+public/temp_plots
+*.png
+*.log
+.git
+.gitignore
+Dockerfile
+docker-compose.yml
+implementation_plan.md
+task.md
+walkthrough.md
