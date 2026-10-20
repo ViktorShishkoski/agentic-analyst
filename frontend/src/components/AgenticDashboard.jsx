@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTheme, themeColor } from '../theme';
 import { 
   Play, 
   Settings, 
@@ -38,12 +39,15 @@ const PROMPT_EXAMPLES = [
 
 const PlotlyChart = ({ spec, chartType }) => {
   const containerRef = useRef(null);
+  const [theme] = useTheme();
 
   useEffect(() => {
     if (!containerRef.current || !window.Plotly) return;
 
-    // Deep copy spec so we do not mutate original
-    const localSpec = JSON.parse(JSON.stringify(spec));
+    // Deep copy spec so we do not mutate original. The backend paints the main
+    // series orange (#FF6B35); swap it for the active theme's accent colour.
+    const chartAccent = themeColor('--chart-accent') || '#FF6B35';
+    const localSpec = JSON.parse(JSON.stringify(spec).replace(/#FF6B35/gi, chartAccent));
     localSpec.layout = localSpec.layout || {};
     localSpec.layout.autosize = true;
     localSpec.layout.responsive = true;
@@ -89,20 +93,26 @@ const PlotlyChart = ({ spec, chartType }) => {
       }
     }
 
-    // Modern styling tweaks for dark theme
+    // Match the chart chrome to the active theme
+    const chartText = themeColor('--chart-text');
+    const chartTick = themeColor('--chart-tick');
+    const chartGrid = themeColor('--chart-grid');
     localSpec.layout.paper_bgcolor = 'rgba(0,0,0,0)';
     localSpec.layout.plot_bgcolor = 'rgba(0,0,0,0)';
-    localSpec.layout.font = { color: '#C5C0B8', family: 'DM Sans, sans-serif' };
-    
+    localSpec.layout.font = { color: chartText, family: 'DM Sans, sans-serif' };
+    if (localSpec.layout.title && localSpec.layout.title.font) {
+      localSpec.layout.title.font.color = chartText;
+    }
+
     if (localSpec.layout.xaxis) {
-      localSpec.layout.xaxis.gridcolor = '#2a2d37';
-      localSpec.layout.xaxis.zerolinecolor = '#2a2d37';
-      localSpec.layout.xaxis.tickfont = { color: '#918D86', size: 9 };
+      localSpec.layout.xaxis.gridcolor = chartGrid;
+      localSpec.layout.xaxis.zerolinecolor = chartGrid;
+      localSpec.layout.xaxis.tickfont = { color: chartTick, size: 9 };
     }
     if (localSpec.layout.yaxis) {
-      localSpec.layout.yaxis.gridcolor = '#2a2d37';
-      localSpec.layout.yaxis.zerolinecolor = '#2a2d37';
-      localSpec.layout.yaxis.tickfont = { color: '#918D86', size: 9 };
+      localSpec.layout.yaxis.gridcolor = chartGrid;
+      localSpec.layout.yaxis.zerolinecolor = chartGrid;
+      localSpec.layout.yaxis.tickfont = { color: chartTick, size: 9 };
     }
 
     window.Plotly.newPlot(containerRef.current, localSpec.data, localSpec.layout, {
@@ -123,7 +133,7 @@ const PlotlyChart = ({ spec, chartType }) => {
         window.Plotly.purge(containerRef.current);
       }
     };
-  }, [spec, chartType]);
+  }, [spec, chartType, theme]);
 
   return <div ref={containerRef} className="w-full h-full min-h-[220px]" />;
 };
@@ -385,7 +395,7 @@ const AgenticDashboard = ({ apiBase = 'http://localhost:3001', addLog }) => {
       {/* Top dashboard header bar */}
       <header className="flex flex-wrap items-center justify-between gap-4 bg-[var(--bg-elevated)] border border-[var(--border-color)] rounded-xl px-5 py-4 shrink-0 shadow-md mb-4">
         <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-[oklch(75%_0.14_85_/_0.1)] border border-[oklch(75%_0.14_85_/_0.3)] shadow-inner">
+          <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-[var(--accent-gold)]/10 border border-[var(--accent-gold)]/30 shadow-inner">
             <Sparkles className="text-[var(--accent-gold)] w-5 h-5" />
           </div>
           <div>
@@ -403,7 +413,7 @@ const AgenticDashboard = ({ apiBase = 'http://localhost:3001', addLog }) => {
         {workflowState !== 'input' && (
           <button
             onClick={handleReset}
-            className="flex items-center gap-1.5 text-[10px] font-semibold text-[var(--error)] hover:bg-[oklch(62%_0.18_25_/_0.06)] px-3 py-2 rounded-lg border border-[oklch(62%_0.18_25_/_0.15)] transition-all uppercase tracking-wider"
+            className="flex items-center gap-1.5 text-[10px] font-semibold text-[var(--error)] hover:bg-[var(--error)]/6 px-3 py-2 rounded-lg border border-[var(--error)]/15 transition-all uppercase tracking-wider"
           >
             <Trash2 size={12} />
             Reset Builder
@@ -432,13 +442,13 @@ const AgenticDashboard = ({ apiBase = 'http://localhost:3001', addLog }) => {
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
                 placeholder="e.g., Show me counts of restaurants by borough, top cuisines by star rating, and grade distributions in Manhattan."
-                className="w-full bg-black/35 border border-[var(--border-color)] rounded-lg p-3 text-xs text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--accent-gold)] min-h-[90px] resize-none"
+                className="w-full bg-[var(--well)]/35 border border-[var(--border-color)] rounded-lg p-3 text-xs text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--accent-gold)] min-h-[90px] resize-none"
               />
               <div className="flex justify-end">
                 <button
                   onClick={handleGeneratePlan}
                   disabled={!prompt.trim() || loading}
-                  className="flex items-center gap-2 px-5 py-2.5 bg-[var(--accent-gold)] hover:bg-[var(--accent-gold-hover)] disabled:bg-white/[0.04] disabled:text-[var(--text-muted)] text-black font-semibold text-xs rounded-lg transition-all uppercase tracking-wider"
+                  className="flex items-center gap-2 px-5 py-2.5 bg-[var(--accent-gold)] hover:bg-[var(--accent-gold-hover)] disabled:bg-[var(--tint)]/4 disabled:text-[var(--text-muted)] text-[var(--on-accent)] font-semibold text-xs rounded-lg transition-all uppercase tracking-wider"
                 >
                   {loading ? <RefreshCw size={14} className="animate-spin" /> : <Play size={14} />}
                   Decompose & Plan
@@ -457,7 +467,7 @@ const AgenticDashboard = ({ apiBase = 'http://localhost:3001', addLog }) => {
                   <button
                     key={idx}
                     onClick={() => setPrompt(ex.prompt)}
-                    className="flex flex-col text-left p-3.5 bg-[var(--bg-elevated)] hover:bg-white/[0.02] border border-[var(--border-color)] hover:border-[var(--accent-gold)]/30 rounded-xl transition-all duration-300 group"
+                    className="flex flex-col text-left p-3.5 bg-[var(--bg-elevated)] hover:bg-[var(--tint)]/2 border border-[var(--border-color)] hover:border-[var(--accent-gold)]/30 rounded-xl transition-all duration-300 group"
                   >
                     <span className="text-[10px] font-bold text-[var(--accent-gold)] uppercase tracking-wider mb-1">
                       {ex.title}
@@ -499,11 +509,11 @@ const AgenticDashboard = ({ apiBase = 'http://localhost:3001', addLog }) => {
                     {goals.map((goal, index) => (
                       <div 
                         key={goal.id} 
-                        className="bg-black/20 border border-[var(--border-color)] rounded-xl p-4 flex flex-col md:flex-row gap-4 justify-between"
+                        className="bg-[var(--well)]/20 border border-[var(--border-color)] rounded-xl p-4 flex flex-col md:flex-row gap-4 justify-between"
                       >
                         <div className="flex-1 flex flex-col gap-2">
                           <div className="flex items-center gap-2">
-                            <span className="flex items-center justify-center w-5 h-5 rounded bg-[oklch(75%_0.14_85_/_0.08)] border border-[oklch(75%_0.14_85_/_0.2)] text-[var(--accent-gold)] text-[10px] font-bold font-mono">
+                            <span className="flex items-center justify-center w-5 h-5 rounded bg-[var(--accent-gold)]/8 border border-[var(--accent-gold)]/20 text-[var(--accent-gold)] text-[10px] font-bold font-mono">
                               {index + 1}
                             </span>
                             <input 
@@ -527,7 +537,7 @@ const AgenticDashboard = ({ apiBase = 'http://localhost:3001', addLog }) => {
                         <div className="flex flex-wrap items-center gap-3 self-center shrink-0">
                           <div className="flex flex-col gap-0.5">
                             <span className="text-[7px] text-gray-500 font-mono uppercase">Collection</span>
-                            <span className="text-[10px] font-mono text-[var(--accent-teal-light)] bg-black/45 border border-[var(--border-color)] px-2 py-1 rounded">
+                            <span className="text-[10px] font-mono text-[var(--accent-teal-light)] bg-[var(--well)]/45 border border-[var(--border-color)] px-2 py-1 rounded">
                               {goal.collection}
                             </span>
                           </div>
@@ -537,7 +547,7 @@ const AgenticDashboard = ({ apiBase = 'http://localhost:3001', addLog }) => {
                             <select
                               value={goal.chart_type}
                               onChange={(e) => updateGoal(index, 'chart_type', e.target.value)}
-                              className="text-[10px] font-mono text-[var(--accent-gold)] bg-black/45 border border-[var(--border-color)] px-1.5 py-1 rounded focus:outline-none focus:border-[var(--accent-gold)]"
+                              className="text-[10px] font-mono text-[var(--accent-gold)] bg-[var(--well)]/45 border border-[var(--border-color)] px-1.5 py-1 rounded focus:outline-none focus:border-[var(--accent-gold)]"
                             >
                               <option value="bar">Bar</option>
                               <option value="line">Line</option>
@@ -553,13 +563,13 @@ const AgenticDashboard = ({ apiBase = 'http://localhost:3001', addLog }) => {
                   <div className="flex justify-between items-center border-t border-[var(--border-color)] pt-4 mt-2">
                     <button
                       onClick={handleReset}
-                      className="px-4 py-2 border border-[var(--border-color)] rounded-lg text-xs font-bold text-[var(--text-secondary)] hover:bg-white/5 transition-all uppercase tracking-wider"
+                      className="px-4 py-2 border border-[var(--border-color)] rounded-lg text-xs font-bold text-[var(--text-secondary)] hover:bg-[var(--tint)]/5 transition-all uppercase tracking-wider"
                     >
                       Discard & Edit
                     </button>
                     <button
                       onClick={handleExecuteDashboard}
-                      className="flex items-center gap-1.5 px-5 py-2.5 bg-[var(--accent-gold)] hover:bg-[var(--accent-gold-hover)] text-black font-semibold text-xs rounded-lg transition-all uppercase tracking-wider"
+                      className="flex items-center gap-1.5 px-5 py-2.5 bg-[var(--accent-gold)] hover:bg-[var(--accent-gold-hover)] text-[var(--on-accent)] font-semibold text-xs rounded-lg transition-all uppercase tracking-wider"
                     >
                       <span>Approve & Build Dashboard</span>
                       <ArrowRight size={13} />
@@ -574,7 +584,7 @@ const AgenticDashboard = ({ apiBase = 'http://localhost:3001', addLog }) => {
               <span className="text-[9px] font-black font-mono text-[var(--text-muted)] uppercase tracking-wider block mb-2">
                 HUD Operations Telemetry
               </span>
-              <div className="bg-black/35 rounded border border-[var(--border-color)]/30 p-3 h-[90px] overflow-y-auto font-mono text-[10px] text-[var(--accent-teal-light)] flex flex-col gap-1">
+              <div className="bg-[var(--well)]/35 rounded border border-[var(--border-color)]/30 p-3 h-[90px] overflow-y-auto font-mono text-[10px] text-[var(--accent-teal-light)] flex flex-col gap-1">
                 {executionLogs.map((log, idx) => (
                   <div key={idx}>{log}</div>
                 ))}
@@ -586,7 +596,7 @@ const AgenticDashboard = ({ apiBase = 'http://localhost:3001', addLog }) => {
         {/* Phase 3: Executing Map-Reduce Pipeline */}
         {workflowState === 'executing' && (
           <div className="flex flex-col gap-6 max-w-xl mx-auto w-full py-16 justify-center items-center">
-            <div className="relative flex items-center justify-center w-16 h-16 rounded-full bg-[oklch(75%_0.14_85_/_0.06)] border border-[oklch(75%_0.14_85_/_0.2)] animate-pulse mb-2">
+            <div className="relative flex items-center justify-center w-16 h-16 rounded-full bg-[var(--accent-gold)]/6 border border-[var(--accent-gold)]/20 animate-pulse mb-2">
               <RefreshCw className="text-[var(--accent-gold)] w-8 h-8 animate-spin" />
             </div>
             
@@ -603,7 +613,7 @@ const AgenticDashboard = ({ apiBase = 'http://localhost:3001', addLog }) => {
               <span className="text-[9px] font-mono text-[var(--text-muted)] uppercase tracking-widest block mb-2">
                 Concurrency logs
               </span>
-              <div className="bg-black/45 rounded border border-[var(--border-color)] p-3 font-mono text-[10px] text-[#5B8A8A] min-h-[120px] max-h-[160px] overflow-y-auto flex flex-col gap-1.5">
+              <div className="bg-[var(--well)]/45 rounded border border-[var(--border-color)] p-3 font-mono text-[10px] text-[var(--accent-teal)] min-h-[120px] max-h-[160px] overflow-y-auto flex flex-col gap-1.5">
                 {executionLogs.map((log, idx) => (
                   <div key={idx}>{log}</div>
                 ))}
@@ -621,7 +631,7 @@ const AgenticDashboard = ({ apiBase = 'http://localhost:3001', addLog }) => {
                 <span className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider">
                   Interactive Grid Workspace
                 </span>
-                <span className="text-[9px] font-mono text-[var(--text-muted)] bg-black/45 border border-[var(--border-color)] px-2 py-0.5 rounded uppercase">
+                <span className="text-[9px] font-mono text-[var(--text-muted)] bg-[var(--well)]/45 border border-[var(--border-color)] px-2 py-0.5 rounded uppercase">
                   {cards.length} goals fanned-in
                 </span>
               </div>
@@ -630,7 +640,7 @@ const AgenticDashboard = ({ apiBase = 'http://localhost:3001', addLog }) => {
                 <button
                   onClick={handleExportPDF}
                   disabled={isExportingPDF}
-                  className="flex items-center gap-1.5 text-[10px] font-bold text-black bg-[var(--accent-gold)] hover:bg-[var(--accent-gold-hover)] disabled:bg-white/[0.04] disabled:text-[var(--text-muted)] px-3 py-2 rounded-lg transition-all uppercase tracking-wider cursor-pointer"
+                  className="flex items-center gap-1.5 text-[10px] font-bold text-[var(--on-accent)] bg-[var(--accent-gold)] hover:bg-[var(--accent-gold-hover)] disabled:bg-[var(--tint)]/4 disabled:text-[var(--text-muted)] px-3 py-2 rounded-lg transition-all uppercase tracking-wider cursor-pointer"
                 >
                   {isExportingPDF ? <RefreshCw size={12} className="animate-spin" /> : <Download size={12} />}
                   Export PDF (A4)
@@ -646,9 +656,9 @@ const AgenticDashboard = ({ apiBase = 'http://localhost:3001', addLog }) => {
                   className="flex flex-col bg-[var(--bg-elevated)] border border-[var(--border-color)] hover:border-[var(--accent-gold)]/40 rounded-xl overflow-hidden shadow-lg transition-all duration-300 relative group"
                 >
                   {/* Card header */}
-                  <div className="px-4 py-3 bg-white/[0.01] border-b border-[var(--border-color)] flex items-center justify-between">
+                  <div className="px-4 py-3 bg-[var(--tint)]/1 border-b border-[var(--border-color)] flex items-center justify-between">
                     <div className="flex items-center gap-2 truncate">
-                      <span className="flex items-center justify-center w-5 h-5 rounded bg-[oklch(75%_0.14_85_/_0.08)] border border-[oklch(75%_0.14_85_/_0.2)] text-[var(--accent-gold)] text-[10px] font-bold font-mono">
+                      <span className="flex items-center justify-center w-5 h-5 rounded bg-[var(--accent-gold)]/8 border border-[var(--accent-gold)]/20 text-[var(--accent-gold)] text-[10px] font-bold font-mono">
                         {index + 1}
                       </span>
                       <span className="text-[11px] font-semibold text-[var(--text-primary)] truncate" title={card.title}>
@@ -662,7 +672,7 @@ const AgenticDashboard = ({ apiBase = 'http://localhost:3001', addLog }) => {
                       <button
                         onClick={() => moveCard(index, -1)}
                         disabled={index === 0}
-                        className="p-1 text-[var(--text-muted)] hover:text-[var(--accent-gold)] disabled:opacity-30 rounded hover:bg-white/5 transition-all"
+                        className="p-1 text-[var(--text-muted)] hover:text-[var(--accent-gold)] disabled:opacity-30 rounded hover:bg-[var(--tint)]/5 transition-all"
                         title="Move Up/Left"
                       >
                         <ArrowUp size={12} />
@@ -670,7 +680,7 @@ const AgenticDashboard = ({ apiBase = 'http://localhost:3001', addLog }) => {
                       <button
                         onClick={() => moveCard(index, 1)}
                         disabled={index === cards.length - 1}
-                        className="p-1 text-[var(--text-muted)] hover:text-[var(--accent-gold)] disabled:opacity-30 rounded hover:bg-white/5 transition-all"
+                        className="p-1 text-[var(--text-muted)] hover:text-[var(--accent-gold)] disabled:opacity-30 rounded hover:bg-[var(--tint)]/5 transition-all"
                         title="Move Down/Right"
                       >
                         <ArrowDown size={12} />
@@ -685,7 +695,7 @@ const AgenticDashboard = ({ apiBase = 'http://localhost:3001', addLog }) => {
                             const newType = e.target.value;
                             setCards(prev => prev.map(c => c.id === card.id ? { ...c, chartType: newType } : c));
                           }}
-                          className="text-[9px] font-mono text-[var(--accent-gold)] bg-black/45 border border-[var(--border-color)] px-1 rounded mr-1 focus:outline-none"
+                          className="text-[9px] font-mono text-[var(--accent-gold)] bg-[var(--well)]/45 border border-[var(--border-color)] px-1 rounded mr-1 focus:outline-none"
                         >
                           <option value="bar">Bar</option>
                           <option value="line">Line</option>
@@ -697,7 +707,7 @@ const AgenticDashboard = ({ apiBase = 'http://localhost:3001', addLog }) => {
                       {/* Card Rerun */}
                       <button
                         onClick={() => handleReRunCard(card.id, card.query)}
-                        className="p-1 text-[var(--text-muted)] hover:text-[var(--accent-gold)] rounded hover:bg-white/5 transition-all"
+                        className="p-1 text-[var(--text-muted)] hover:text-[var(--accent-gold)] rounded hover:bg-[var(--tint)]/5 transition-all"
                         title="Re-run pipeline for this goal"
                       >
                         <RefreshCw size={12} />
@@ -706,13 +716,13 @@ const AgenticDashboard = ({ apiBase = 'http://localhost:3001', addLog }) => {
                   </div>
 
                   {/* Query info bar */}
-                  <div className="px-4 py-2 bg-black/20 border-b border-[var(--border-color)] text-[10px] font-mono text-[var(--accent-teal-light)] flex items-center gap-1.5 truncate">
+                  <div className="px-4 py-2 bg-[var(--well)]/20 border-b border-[var(--border-color)] text-[10px] font-mono text-[var(--accent-teal-light)] flex items-center gap-1.5 truncate">
                     <span className="text-[var(--text-muted)] font-black text-[9px] uppercase tracking-wider shrink-0">Target Intent:</span>
                     <span className="truncate">{card.query}</span>
                   </div>
 
                   {/* Core Chart Render Viewport */}
-                  <div className="flex-1 bg-black/35 p-4 flex items-center justify-center min-h-[260px] relative overflow-hidden">
+                  <div className="flex-1 bg-[var(--well)]/35 p-4 flex items-center justify-center min-h-[260px] relative overflow-hidden">
                     {card.status === 'loading' && (
                       <div className="flex flex-col items-center justify-center gap-3">
                         <RefreshCw size={20} className="text-[var(--accent-gold)] animate-spin" />
@@ -736,7 +746,7 @@ const AgenticDashboard = ({ apiBase = 'http://localhost:3001', addLog }) => {
                   </div>
 
                   {/* Caption & Explain deep-dive trigger */}
-                  <div className="p-4 bg-white/[0.01] border-t border-[var(--border-color)] flex flex-col gap-2 min-h-[110px]">
+                  <div className="p-4 bg-[var(--tint)]/1 border-t border-[var(--border-color)] flex flex-col gap-2 min-h-[110px]">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-1.5 text-[9px] text-[var(--text-muted)] font-black uppercase tracking-widest">
                         <FileText size={10} className="text-[var(--accent-teal)]" />
@@ -763,7 +773,7 @@ const AgenticDashboard = ({ apiBase = 'http://localhost:3001', addLog }) => {
 
             {/* Privacy Alert Disclosure footer */}
             <footer className="mt-6 bg-[var(--bg-elevated)] border border-[var(--border-color)] p-4 rounded-xl flex items-center gap-3.5">
-              <div className="flex items-center justify-center w-8 h-8 rounded bg-white/5 text-[var(--accent-gold)] shrink-0">
+              <div className="flex items-center justify-center w-8 h-8 rounded bg-[var(--tint)]/5 text-[var(--accent-gold)] shrink-0">
                 <Lock size={15} />
               </div>
               <div className="flex flex-col gap-0.5">
@@ -782,7 +792,7 @@ const AgenticDashboard = ({ apiBase = 'http://localhost:3001', addLog }) => {
 
       {/* Explanation overlay modal */}
       {explainingCardId !== null && (
-        <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-[var(--backdrop)]/75 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-[var(--bg-elevated)] border border-[var(--accent-gold)]/30 rounded-xl max-w-xl w-full overflow-hidden shadow-2xl flex flex-col">
             <div className="px-5 py-4 border-b border-[var(--border-color)] flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -793,7 +803,7 @@ const AgenticDashboard = ({ apiBase = 'http://localhost:3001', addLog }) => {
               </div>
               <button 
                 onClick={() => { setExplainingCardId(null); setExplanation(null); }}
-                className="text-[10px] font-mono text-[var(--text-muted)] hover:text-white border border-[var(--border-color)] hover:border-white px-2 py-0.5 rounded"
+                className="text-[10px] font-mono text-[var(--text-muted)] hover:text-[var(--text-primary)] border border-[var(--border-color)] hover:border-[var(--text-primary)] px-2 py-0.5 rounded"
               >
                 CLOSE [ESC]
               </button>
@@ -812,7 +822,7 @@ const AgenticDashboard = ({ apiBase = 'http://localhost:3001', addLog }) => {
               )}
             </div>
             
-            <div className="px-5 py-3 bg-black/25 border-t border-[var(--border-color)] text-[8px] font-mono text-gray-500 uppercase tracking-widest text-center">
+            <div className="px-5 py-3 bg-[var(--well)]/25 border-t border-[var(--border-color)] text-[8px] font-mono text-gray-500 uppercase tracking-widest text-center">
               Agentic Analyst Liaison Engine v3.5
             </div>
           </div>

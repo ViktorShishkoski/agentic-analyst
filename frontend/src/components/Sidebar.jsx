@@ -7,8 +7,11 @@ import {
   Settings, 
   TrendingUp,
   Grid,
-  LayoutGrid
+  LayoutGrid,
+  Sun,
+  Moon
 } from 'lucide-react';
+import { useTheme } from '../theme';
 
 const Sidebar = ({ 
   activeTab = 'dashboard', 
@@ -18,6 +21,8 @@ const Sidebar = ({
   hasCustomDashboard = false 
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [theme, setTheme] = useTheme();
+  const isDark = theme === 'dark';
 
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -37,13 +42,13 @@ const Sidebar = ({
 
   return (
     <aside 
-      className={`h-screen flex flex-col border-r border-[var(--border-color)] bg-[rgba(22,25,34,0.9)] backdrop-blur-md transition-all duration-300 ease-in-out shrink-0 z-30 ${isHovered ? 'w-[200px]' : 'w-[64px]'}`}
+      className={`h-screen flex flex-col border-r border-[var(--border-color)] bg-[var(--bg-sidebar)] backdrop-blur-md transition-all duration-300 ease-in-out shrink-0 z-30 ${isHovered ? 'w-[200px]' : 'w-[64px]'}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Brand logo section */}
       <div className="flex items-center gap-3 px-4 py-6 border-b border-[var(--border-color)] shrink-0 overflow-hidden">
-        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-[oklch(75%_0.14_85_/_0.1)] border border-[oklch(75%_0.14_85_/_0.3)] shrink-0">
+        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-[var(--accent-gold)]/10 border border-[var(--accent-gold)]/30 shrink-0">
           <TrendingUp className="text-[var(--accent-gold)] w-5 h-5" />
         </div>
         <span className={`font-semibold tracking-wider text-[var(--accent-gold)] text-sm transition-opacity duration-200 ${isHovered ? 'opacity-100' : 'opacity-0 w-0'}`}>
@@ -62,8 +67,8 @@ const Sidebar = ({
               onClick={() => onTabChange && onTabChange(item.id)}
               className={`flex items-center gap-4.5 w-full rounded-lg py-2.5 px-3 relative transition-all group overflow-hidden ${
                 isActive 
-                  ? 'bg-[oklch(75%_0.14_85_/_0.06)] text-[var(--text-primary)] font-medium' 
-                  : 'text-[var(--text-secondary)] hover:bg-white/[0.02] hover:text-[var(--text-primary)]'
+                  ? 'bg-[var(--accent-gold)]/6 text-[var(--text-primary)] font-medium' 
+                  : 'text-[var(--text-secondary)] hover:bg-[var(--tint)]/2 hover:text-[var(--text-primary)]'
               }`}
             >
               {/* Left active accent bar */}
@@ -89,7 +94,7 @@ const Sidebar = ({
           <div className="mt-auto pt-4 border-t border-[var(--border-color)]">
             <button
               onClick={onCreateDashboard}
-              className="flex items-center gap-4.5 w-full rounded-lg py-2.5 px-3 bg-[oklch(75%_0.14_85_/_0.15)] text-[var(--accent-gold)] hover:bg-[oklch(75%_0.14_85_/_0.25)] border border-[oklch(75%_0.14_85_/_0.3)] transition-all font-semibold text-xs overflow-hidden group"
+              className="flex items-center gap-4.5 w-full rounded-lg py-2.5 px-3 bg-[var(--accent-gold)]/15 text-[var(--accent-gold)] hover:bg-[var(--accent-gold)]/25 border border-[var(--accent-gold)]/30 transition-all font-semibold text-xs overflow-hidden group"
               title="Create Custom Dashboard"
             >
               <Grid size={18} className="shrink-0 stroke-[2.0] text-[var(--accent-gold)] animate-pulse" />
@@ -100,6 +105,29 @@ const Sidebar = ({
           </div>
         )}
       </nav>
+
+      {/* Theme switch: light (default) / dark */}
+      <div className="px-2 pb-3 shrink-0">
+        <button
+          type="button"
+          onClick={() => setTheme(isDark ? 'light' : 'dark')}
+          role="switch"
+          aria-checked={isDark}
+          aria-label="Dark theme"
+          title={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
+          className="flex items-center gap-4.5 w-full rounded-lg py-2.5 px-3 text-[var(--text-secondary)] hover:bg-[var(--tint)]/5 hover:text-[var(--text-primary)] border border-[var(--border-color)] transition-all overflow-hidden"
+        >
+          {isDark
+            ? <Moon size={18} className="shrink-0 stroke-[2.0] text-[var(--accent-gold)]" />
+            : <Sun size={18} className="shrink-0 stroke-[2.0] text-[var(--accent-gold)]" />}
+          <span className={`flex-1 flex items-center justify-between text-xs tracking-wide whitespace-nowrap transition-opacity duration-200 ${isHovered ? 'opacity-100' : 'opacity-0 w-0'}`}>
+            Dark theme
+            <span className={`relative inline-block w-7 h-4 rounded-full transition-colors ${isDark ? 'bg-[var(--accent-gold)]' : 'bg-[var(--border-color)]'}`}>
+              <span className={`absolute top-0.5 w-3 h-3 rounded-full bg-[var(--bg-elevated)] shadow transition-all ${isDark ? 'left-3.5' : 'left-0.5'}`} />
+            </span>
+          </span>
+        </button>
+      </div>
 
       {/* Footer system tag */}
       <div className="p-4 border-t border-[var(--border-color)] flex items-center justify-center shrink-0">

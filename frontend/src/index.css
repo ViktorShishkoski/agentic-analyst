@@ -1,28 +1,105 @@
 @import "tailwindcss";
 
+/*
+ * Themes. Light is the default; dark (the original black + amber look) is
+ * opt-in via <html data-theme="dark">. Components only use these tokens, so
+ * a theme is just a different set of values.
+ * "--accent-gold" keeps its name for compatibility: it is the main accent,
+ * amber-gold in dark and deep blue in light.
+ */
 :root {
-  /* OKLCH Color Palette */
-  --bg-primary: oklch(15% 0.01 45);     /* #0f1117 - Warm dark background */
-  --bg-elevated: oklch(18% 0.01 45);    /* #161922 - Slightly lighter panel */
-  --bg-overlay: oklch(22% 0.02 45);     /* #1e2230 - Tooltips / Dropdowns */
-  
-  --accent-gold: oklch(75% 0.14 85);    /* #D4A853 - Amber-gold primary */
+  color-scheme: light;
+
+  --bg-primary: oklch(97.2% 0.012 250);   /* blue-tinted white page */
+  --bg-elevated: oklch(99.4% 0.004 250);  /* panels */
+  --bg-overlay: oklch(94.6% 0.018 250);   /* tooltips / dropdowns */
+  --bg-sidebar: rgba(255, 255, 255, 0.9);
+
+  --accent-gold: oklch(38% 0.13 262);     /* deep blue primary accent */
+  --accent-gold-hover: oklch(32% 0.12 262);
+  --accent-gold-light: oklch(48% 0.14 262);
+
+  --accent-teal: oklch(48% 0.08 210);
+  --accent-teal-hover: oklch(42% 0.08 210);
+  --accent-teal-light: oklch(44% 0.08 210);
+
+  --text-primary: oklch(24% 0.04 260);
+  --text-secondary: oklch(38% 0.035 260);
+  --text-muted: oklch(54% 0.03 260);
+
+  --border-color: oklch(89% 0.02 250);
+  --border-focus: oklch(60% 0.1 262);
+
+  --error: oklch(54% 0.2 25);
+  --success: oklch(50% 0.13 160);
+
+  --on-accent: #ffffff;                   /* text on accent-filled buttons */
+  --tint: oklch(38% 0.13 262);            /* faint hover / header washes */
+  --well: oklch(84% 0.03 255);            /* recessed boxes (code, logs) */
+  --backdrop: oklch(25% 0.05 260);        /* modal backdrop */
+  --amber: oklch(38% 0.13 262);
+  --warn: oklch(38% 0.13 262);            /* syntax-guard highlight */
+  --code-cyan: oklch(48% 0.12 225);
+  --guard-bg: oklch(99.4% 0.004 250);
+  --guard-text: oklch(38% 0.035 260);
+  --input-bg: oklch(100% 0 0 / 0.85);
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --shadow-color: rgba(30, 58, 138, 0.08);
+  --glow-1: oklch(85% 0.06 250 / 0.35);
+  --glow-2: oklch(88% 0.05 210 / 0.3);
+
+  /* Plotly needs plain hex colours */
+  --chart-text: #3b4a63;
+  --chart-tick: #64748b;
+  --chart-grid: #dde4ef;
+  --chart-accent: #1e3a8a;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg-primary: oklch(15% 0.01 45);       /* #0f1117 - Warm dark background */
+  --bg-elevated: oklch(18% 0.01 45);      /* #161922 - Slightly lighter panel */
+  --bg-overlay: oklch(22% 0.02 45);       /* #1e2230 - Tooltips / Dropdowns */
+  --bg-sidebar: rgba(22, 25, 34, 0.9);
+
+  --accent-gold: oklch(75% 0.14 85);      /* #D4A853 - Amber-gold primary */
   --accent-gold-hover: oklch(70% 0.14 85);
-  --accent-gold-light: oklch(82% 0.11 85); /* #E5B86A */
-  
-  --accent-teal: oklch(58% 0.07 195);   /* #5B8A8A - Slate-teal secondary */
+  --accent-gold-light: oklch(82% 0.11 85);
+
+  --accent-teal: oklch(58% 0.07 195);     /* #5B8A8A - Slate-teal secondary */
   --accent-teal-hover: oklch(52% 0.07 195);
-  --accent-teal-light: oklch(66% 0.06 195); /* #6B9A9A */
-  
-  --text-primary: oklch(92% 0.01 45);   /* #E8E4DF - Off-white text */
-  --text-secondary: oklch(80% 0.01 45); /* #C5C0B8 */
-  --text-muted: oklch(62% 0.01 45);     /* #918D86 */
-  
-  --border-color: oklch(25% 0.02 45);   /* #2a2d37 - Muted warm border */
+  --accent-teal-light: oklch(66% 0.06 195);
+
+  --text-primary: oklch(92% 0.01 45);
+  --text-secondary: oklch(80% 0.01 45);
+  --text-muted: oklch(62% 0.01 45);
+
+  --border-color: oklch(25% 0.02 45);
   --border-focus: oklch(40% 0.05 85);
-  
-  --error: oklch(62% 0.18 25);          /* Warm Red */
-  --success: oklch(65% 0.15 160);       /* Soft Green/Teal */
+
+  --error: oklch(62% 0.18 25);
+  --success: oklch(65% 0.15 160);
+
+  --on-accent: #000000;
+  --tint: #ffffff;
+  --well: #000000;
+  --backdrop: #000000;
+  --amber: #f59e0b;
+  --warn: #ffaa00;
+  --code-cyan: #00ffff;
+  --guard-bg: #1a1a1a;
+  --guard-text: #cbd5e1;
+  --input-bg: rgba(15, 17, 23, 0.6);
+  --glass-bg: rgba(22, 25, 34, 0.75);
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --glow-1: oklch(22% 0.03 85 / 0.15);
+  --glow-2: oklch(25% 0.03 195 / 0.1);
+
+  --chart-text: #C5C0B8;
+  --chart-tick: #918D86;
+  --chart-grid: #2a2d37;
+  --chart-accent: #FF6B35;
 }
 
 @layer base {
@@ -34,8 +111,8 @@
     -moz-osx-font-smoothing: grayscale;
     overflow: hidden;
     background-image: 
-      radial-gradient(circle at 10% 10%, oklch(22% 0.03 85 / 0.15) 0%, transparent 50%),
-      radial-gradient(circle at 90% 90%, oklch(25% 0.03 195 / 0.1) 0%, transparent 50%);
+      radial-gradient(circle at 10% 10%, var(--glow-1) 0%, transparent 50%),
+      radial-gradient(circle at 90% 90%, var(--glow-2) 0%, transparent 50%);
   }
 }
 
@@ -50,7 +127,7 @@
   background-color: var(--bg-elevated);
   border: 1px solid var(--border-color);
   border-radius: 0.75rem;
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 20px -2px var(--shadow-color);
 }
 
 .surface-overlay {
@@ -72,15 +149,15 @@
 
 /* Warm Glass Panels */
 .glass-panel {
-  background-color: rgba(22, 25, 34, 0.75);
+  background-color: var(--glass-bg);
   backdrop-filter: blur(16px);
-  border: 1px solid rgba(212, 168, 83, 0.08);
+  border: 1px solid color-mix(in oklab, var(--accent-gold) 8%, transparent);
   border-radius: 1rem;
 }
 
 .glass-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0) 100%);
-  border: 1px solid rgba(212, 168, 83, 0.05);
+  background: linear-gradient(135deg, color-mix(in oklab, var(--tint) 2%, transparent) 0%, transparent 100%);
+  border: 1px solid color-mix(in oklab, var(--accent-gold) 5%, transparent);
   border-radius: 0.75rem;
 }
 
@@ -105,7 +182,7 @@
 
 /* Button & Input Theme overrides */
 .input-field {
-  background-color: rgba(15, 17, 23, 0.6);
+  background-color: var(--input-bg);
   border: 1px solid var(--border-color);
   border-radius: 0.5rem;
   padding: 0.625rem 0.875rem;
@@ -117,12 +194,12 @@
 .input-field:focus {
   outline: none;
   border-color: var(--accent-gold);
-  box-shadow: 0 0 0 2px rgba(212, 168, 83, 0.15);
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--accent-gold) 15%, transparent);
 }
 
 .btn-primary {
   background-color: var(--accent-gold);
-  color: #000000;
+  color: var(--on-accent);
   font-weight: 600;
   border-radius: 0.5rem;
   padding: 0.625rem 1.25rem;
@@ -154,7 +231,7 @@
 }
 
 .btn-secondary:hover:not(:disabled) {
-  background-color: rgba(255, 255, 255, 0.03);
+  background-color: color-mix(in oklab, var(--tint) 3%, transparent);
   border-color: var(--text-muted);
   color: var(--text-primary);
 }

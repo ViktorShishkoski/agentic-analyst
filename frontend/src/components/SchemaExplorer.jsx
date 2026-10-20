@@ -46,7 +46,7 @@ const SchemaExplorer = ({ schemaObject, onFieldClick }) => {
 
   return (
     <div className="flex flex-col h-full bg-[var(--bg-elevated)] border border-[var(--border-color)] rounded-xl overflow-hidden shadow-lg">
-      <div className="p-3 border-b border-[var(--border-color)] bg-white/[0.01] flex items-center gap-2">
+      <div className="p-3 border-b border-[var(--border-color)] bg-[var(--tint)]/1 flex items-center gap-2">
         <Database size={14} className="text-[var(--accent-gold)]" />
         <span className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">
           Schema Explorer
@@ -57,11 +57,11 @@ const SchemaExplorer = ({ schemaObject, onFieldClick }) => {
         {Object.entries(schemaObject).map(([colName, fields]) => {
           const isExpanded = !!expandedCols[colName];
           return (
-            <div key={colName} className="border border-[var(--border-color)] rounded-lg overflow-hidden bg-black/10">
+            <div key={colName} className="border border-[var(--border-color)] rounded-lg overflow-hidden bg-[var(--well)]/10">
               {/* Collection Header */}
               <button
                 onClick={() => toggleCollection(colName)}
-                className="w-full flex items-center justify-between p-2.5 text-left hover:bg-white/[0.02] transition-colors"
+                className="w-full flex items-center justify-between p-2.5 text-left hover:bg-[var(--tint)]/2 transition-colors"
               >
                 <div className="flex items-center gap-2 font-mono text-xs font-semibold text-[var(--text-primary)]">
                   <span className="text-[var(--accent-teal)]">◈</span>
@@ -72,7 +72,7 @@ const SchemaExplorer = ({ schemaObject, onFieldClick }) => {
 
               {/* Fields List */}
               {isExpanded && (
-                <div className="border-t border-[var(--border-color)] divide-y divide-[var(--border-color)]/50 bg-black/20">
+                <div className="border-t border-[var(--border-color)] divide-y divide-[var(--border-color)]/50 bg-[var(--well)]/20">
                   {Object.entries(fields).map(([fieldName, fieldInfo]) => {
                     const type = inferType(fieldInfo);
                     const isCopied = copiedField === fieldName;
@@ -80,17 +80,17 @@ const SchemaExplorer = ({ schemaObject, onFieldClick }) => {
                     return (
                       <div 
                         key={fieldName} 
-                        className="group flex flex-col p-2.5 hover:bg-white/[0.01] transition-all"
+                        className="group flex flex-col p-2.5 hover:bg-[var(--tint)]/1 transition-all"
                       >
                         <div className="flex items-center justify-between gap-2">
                           <div className="flex items-center gap-2 font-mono text-xs overflow-hidden">
                             {/* Type Badge */}
                             <span className={`text-[8px] font-black px-1.5 py-0.5 rounded tracking-wider border shrink-0 ${
                               type === 'NUM' 
-                                ? 'bg-[oklch(75%_0.14_85_/_0.06)] text-[var(--accent-gold)] border-[oklch(75%_0.14_85_/_0.15)]'
+                                ? 'bg-[var(--accent-gold)]/6 text-[var(--accent-gold)] border-[var(--accent-gold)]/15'
                                 : type === 'CAT'
-                                ? 'bg-[oklch(58%_0.07_195_/_0.06)] text-[var(--accent-teal)] border-[oklch(58%_0.07_195_/_0.15)]'
-                                : 'bg-white/5 text-[var(--text-secondary)] border-white/10'
+                                ? 'bg-[var(--accent-teal)]/6 text-[var(--accent-teal)] border-[var(--accent-teal)]/15'
+                                : 'bg-[var(--tint)]/5 text-[var(--text-secondary)] border-[var(--tint)]/10'
                             }`}>
                               {type}
                             </span>
@@ -102,7 +102,7 @@ const SchemaExplorer = ({ schemaObject, onFieldClick }) => {
                           {/* Copy Action */}
                           <button
                             onClick={(e) => handleCopy(fieldName, e)}
-                            className="p-1 rounded opacity-0 group-hover:opacity-100 hover:bg-white/5 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all shrink-0"
+                            className="p-1 rounded opacity-0 group-hover:opacity-100 hover:bg-[var(--tint)]/5 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all shrink-0"
                             title="Copy field name"
                           >
                             {isCopied ? <Check size={12} className="text-[var(--success)]" /> : <Copy size={12} />}
@@ -115,7 +115,7 @@ const SchemaExplorer = ({ schemaObject, onFieldClick }) => {
                             {fieldInfo.values.slice(0, 5).map((val, idx) => (
                               <span 
                                 key={idx} 
-                                className="text-[9px] font-mono bg-white/[0.03] border border-white/[0.04] text-[var(--text-muted)] px-1.5 py-0.5 rounded-sm"
+                                className="text-[9px] font-mono bg-[var(--tint)]/3 border border-[var(--tint)]/4 text-[var(--text-muted)] px-1.5 py-0.5 rounded-sm"
                               >
                                 {String(val)}
                               </span>

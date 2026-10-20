@@ -20,7 +20,7 @@ const CustomDashboard = ({ visuals = [], apiBase = 'http://localhost:3001', onRe
       {/* Dashboard Top bar */}
       <header className="flex flex-wrap items-center justify-between gap-4 bg-[var(--bg-elevated)] border border-[var(--border-color)] rounded-xl px-5 py-4 shrink-0 shadow-md mb-4">
         <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-[oklch(75%_0.14_85_/_0.1)] border border-[oklch(75%_0.14_85_/_0.3)] shadow-inner">
+          <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-[var(--accent-gold)]/10 border border-[var(--accent-gold)]/30 shadow-inner">
             <LayoutGrid className="text-[var(--accent-gold)] w-5 h-5" />
           </div>
           <div>
@@ -37,7 +37,7 @@ const CustomDashboard = ({ visuals = [], apiBase = 'http://localhost:3001', onRe
 
         <button
           onClick={onReset}
-          className="flex items-center gap-1.5 text-[10px] font-semibold text-[var(--error)] hover:bg-[oklch(62%_0.18_25_/_0.06)] px-3 py-2 rounded-lg border border-[oklch(62%_0.18_25_/_0.15)] transition-all uppercase tracking-wider"
+          className="flex items-center gap-1.5 text-[10px] font-semibold text-[var(--error)] hover:bg-[var(--error)]/6 px-3 py-2 rounded-lg border border-[var(--error)]/15 transition-all uppercase tracking-wider"
         >
           <Trash2 size={12} />
           Reset Dashboard
@@ -52,9 +52,9 @@ const CustomDashboard = ({ visuals = [], apiBase = 'http://localhost:3001', onRe
             className="flex flex-col bg-[var(--bg-elevated)] border border-[var(--border-color)] hover:border-[var(--accent-gold)]/40 rounded-xl overflow-hidden shadow-lg transition-all duration-300 group"
           >
             {/* Visual Header */}
-            <div className="px-4 py-3 bg-white/[0.01] border-b border-[var(--border-color)] flex items-center justify-between">
+            <div className="px-4 py-3 bg-[var(--tint)]/1 border-b border-[var(--border-color)] flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="flex items-center justify-center w-5 h-5 rounded bg-[oklch(75%_0.14_85_/_0.08)] border border-[oklch(75%_0.14_85_/_0.2)] text-[var(--accent-gold)] text-[10px] font-bold font-mono">
+                <span className="flex items-center justify-center w-5 h-5 rounded bg-[var(--accent-gold)]/8 border border-[var(--accent-gold)]/20 text-[var(--accent-gold)] text-[10px] font-bold font-mono">
                   {index + 1}
                 </span>
                 <span className="text-[11px] font-semibold text-[var(--text-primary)] max-w-xs truncate" title={visual.title}>
@@ -63,7 +63,7 @@ const CustomDashboard = ({ visuals = [], apiBase = 'http://localhost:3001', onRe
               </div>
               <button
                 onClick={() => handleDownload(visual.plotUrl)}
-                className="p-1 text-[var(--text-muted)] hover:text-[var(--accent-gold)] hover:bg-white/5 rounded transition-all"
+                className="p-1 text-[var(--text-muted)] hover:text-[var(--accent-gold)] hover:bg-[var(--tint)]/5 rounded transition-all"
                 title="Download Visualization"
               >
                 <Download size={13} />
@@ -71,22 +71,22 @@ const CustomDashboard = ({ visuals = [], apiBase = 'http://localhost:3001', onRe
             </div>
 
             {/* Query Info Bar */}
-            <div className="px-4 py-2 bg-black/20 border-b border-[var(--border-color)] text-[10px] font-mono text-[var(--accent-teal-light)] flex items-center gap-1.5 truncate">
+            <div className="px-4 py-2 bg-[var(--well)]/20 border-b border-[var(--border-color)] text-[10px] font-mono text-[var(--accent-teal-light)] flex items-center gap-1.5 truncate">
               <span className="text-[var(--text-muted)] font-black text-[9px] uppercase tracking-wider">Query:</span>
               <span className="truncate">{visual.query}</span>
             </div>
 
             {/* Plot Image Viewport */}
-            <div className="flex-1 bg-black/40 p-4 flex items-center justify-center min-h-[260px] max-h-[320px] relative overflow-hidden">
+            <div className="flex-1 bg-[var(--well)]/40 p-4 flex items-center justify-center min-h-[260px] max-h-[320px] relative overflow-hidden">
               <img 
                 src={`${apiBase}${visual.plotUrl}`} 
                 alt={visual.title} 
-                className="max-w-full max-h-full object-contain rounded border border-[var(--border-color)]/50 p-1 bg-black/25"
+                className="max-w-full max-h-full object-contain rounded border border-[var(--border-color)]/50 p-1 bg-[var(--well)]/25"
               />
             </div>
 
             {/* AI Insights & Summarization block */}
-            <div className="p-4 bg-white/[0.01] border-t border-[var(--border-color)] flex flex-col gap-2 min-h-[100px]">
+            <div className="p-4 bg-[var(--tint)]/1 border-t border-[var(--border-color)] flex flex-col gap-2 min-h-[100px]">
               <div className="flex items-center gap-1.5 text-[9px] text-[var(--text-muted)] font-black uppercase tracking-widest">
                 <FileText size={10} className="text-[var(--accent-teal)]" />
                 <span>Synthesis Intelligence</span>

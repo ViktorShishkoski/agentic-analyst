@@ -27,7 +27,7 @@ const ActivityLog = ({ logs = [] }) => {
   return (
     <div className="flex flex-col h-full bg-[var(--bg-elevated)] border border-[var(--border-color)] rounded-xl overflow-hidden shadow-lg font-mono">
       {/* Header bar */}
-      <div className="p-3 border-b border-[var(--border-color)] bg-white/[0.01] flex items-center justify-between shrink-0 select-none">
+      <div className="p-3 border-b border-[var(--border-color)] bg-[var(--tint)]/1 flex items-center justify-between shrink-0 select-none">
         <div className="flex items-center gap-2">
           <Terminal size={14} className="text-[var(--accent-gold)]" />
           <span className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">
@@ -37,9 +37,9 @@ const ActivityLog = ({ logs = [] }) => {
         
         {/* Decorative dots */}
         <div className="flex gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-[oklch(62%_0.18_25_/_0.2)] border border-[oklch(62%_0.18_25_/_0.4)]" />
-          <div className="w-2.5 h-2.5 rounded-full bg-[oklch(75%_0.14_85_/_0.2)] border border-[oklch(75%_0.14_85_/_0.4)]" />
-          <div className="w-2.5 h-2.5 rounded-full bg-[oklch(65%_0.15_160_/_0.2)] border border-[oklch(65%_0.15_160_/_0.4)]" />
+          <div className="w-2.5 h-2.5 rounded-full bg-[var(--error)]/20 border border-[var(--error)]/40" />
+          <div className="w-2.5 h-2.5 rounded-full bg-[var(--accent-gold)]/20 border border-[var(--accent-gold)]/40" />
+          <div className="w-2.5 h-2.5 rounded-full bg-[var(--success)]/20 border border-[var(--success)]/40" />
         </div>
       </div>
 
@@ -60,7 +60,7 @@ const ActivityLog = ({ logs = [] }) => {
             return (
               <div 
                 key={log.id || Math.random()} 
-                className="flex items-start gap-2.5 hover:bg-white/[0.01] py-0.5 rounded transition-colors"
+                className="flex items-start gap-2.5 hover:bg-[var(--tint)]/1 py-0.5 rounded transition-colors"
               >
                 {/* Monospace Timestamp */}
                 <span className="text-[var(--text-muted)] shrink-0 select-none">
