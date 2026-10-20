@@ -36,7 +36,7 @@ const ChartViewport = ({ resultData, isLoading = false, apiBase = 'http://localh
   if (resultData && resultData.isAmbiguous) {
     return (
       <div className="w-full h-full min-h-[200px] flex flex-col items-center justify-center p-8 bg-[var(--bg-elevated)] border border-[var(--accent-gold)]/40 rounded-xl shadow-lg">
-        <div className="w-12 h-12 rounded-full bg-[oklch(75%_0.14_85_/_0.06)] border border-[oklch(75%_0.14_85_/_0.2)] flex items-center justify-center mb-4">
+        <div className="w-12 h-12 rounded-full bg-[var(--accent-gold)]/6 border border-[var(--accent-gold)]/20 flex items-center justify-center mb-4">
           <AlertCircle className="text-[var(--accent-gold)] w-6 h-6 stroke-[1.5]" />
         </div>
         <span className="text-[9px] uppercase tracking-widest text-[var(--accent-gold)] font-black">
@@ -50,7 +50,7 @@ const ChartViewport = ({ resultData, isLoading = false, apiBase = 'http://localh
             <button
               key={i}
               onClick={() => onSelectClarification && onSelectClarification(choice.query)}
-              className="w-full text-left p-3.5 bg-black/30 hover:bg-[oklch(75%_0.14_85_/_0.04)] border border-[var(--border-color)] hover:border-[var(--accent-gold)] rounded-lg text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-all duration-200"
+              className="w-full text-left p-3.5 bg-[var(--well)]/30 hover:bg-[var(--accent-gold)]/4 border border-[var(--border-color)] hover:border-[var(--accent-gold)] rounded-lg text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-all duration-200"
             >
               {choice.label}
             </button>
@@ -83,7 +83,7 @@ const ChartViewport = ({ resultData, isLoading = false, apiBase = 'http://localh
         <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--text-primary)]">
           Execution Error
         </h3>
-        <p className="text-[10px] text-[var(--text-muted)] font-mono max-w-md mt-2 p-2 bg-black/20 rounded border border-[var(--border-color)] overflow-x-auto w-full text-left">
+        <p className="text-[10px] text-[var(--text-muted)] font-mono max-w-md mt-2 p-2 bg-[var(--well)]/20 rounded border border-[var(--border-color)] overflow-x-auto w-full text-left">
           {resultData.error}
         </p>
       </div>
@@ -97,14 +97,14 @@ const ChartViewport = ({ resultData, isLoading = false, apiBase = 'http://localh
         <img 
           src={`${apiBase}${resultData.plotUrl}`} 
           alt="Data Visualization" 
-          className="max-w-full max-h-full object-contain rounded-lg shadow-inner bg-black/10 p-2"
+          className="max-w-full max-h-full object-contain rounded-lg shadow-inner bg-[var(--well)]/10 p-2"
         />
         
         {/* Hover reveal download button */}
         <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
           <button 
             onClick={handleDownload}
-            className="p-2 bg-[var(--bg-overlay)] hover:bg-[var(--accent-gold)] text-[var(--text-primary)] hover:text-black border border-[var(--border-color)] hover:border-transparent rounded-lg shadow-md transition-all duration-200"
+            className="p-2 bg-[var(--bg-overlay)] hover:bg-[var(--accent-gold)] text-[var(--text-primary)] hover:text-[var(--on-accent)] border border-[var(--border-color)] hover:border-transparent rounded-lg shadow-md transition-all duration-200"
             title="Download PNG Plot"
           >
             <Download size={15} />
@@ -121,7 +121,7 @@ const ChartViewport = ({ resultData, isLoading = false, apiBase = 'http://localh
 
   return (
     <div className="w-full h-full min-h-[200px] flex flex-col items-center justify-center p-8 bg-[var(--bg-elevated)] border border-[var(--border-color)] rounded-xl shadow-lg">
-      <div className="w-12 h-12 rounded-full bg-[oklch(75%_0.14_85_/_0.06)] border border-[oklch(75%_0.14_85_/_0.2)] flex items-center justify-center mb-4">
+      <div className="w-12 h-12 rounded-full bg-[var(--accent-gold)]/6 border border-[var(--accent-gold)]/20 flex items-center justify-center mb-4">
         <BarChart3 className="text-[var(--accent-gold)] w-6 h-6 stroke-[1.5]" />
       </div>
       <span className="text-[9px] uppercase tracking-widest text-[var(--text-muted)] font-black">

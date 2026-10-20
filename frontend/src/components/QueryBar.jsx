@@ -28,7 +28,7 @@ const QueryBar = ({ query = '', setQuery, onSubmit, isLoading = false, disabled 
       <button
         type="submit"
         disabled={!query.trim() || isLoading || disabled}
-        className="flex items-center gap-2 px-5 py-2.5 bg-[var(--accent-gold)] hover:bg-[var(--accent-gold-hover)] disabled:bg-white/[0.04] disabled:text-[var(--text-muted)] disabled:border-transparent text-black font-semibold text-xs rounded-lg border border-[var(--accent-gold)] shadow-md transition-all duration-200"
+        className="flex items-center gap-2 px-5 py-2.5 bg-[var(--accent-gold)] hover:bg-[var(--accent-gold-hover)] disabled:bg-[var(--tint)]/4 disabled:text-[var(--text-muted)] disabled:border-transparent text-[var(--on-accent)] font-semibold text-xs rounded-lg border border-[var(--accent-gold)] shadow-md transition-all duration-200"
       >
         {isLoading ? (
           <>

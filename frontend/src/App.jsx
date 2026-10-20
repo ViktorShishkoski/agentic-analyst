@@ -268,7 +268,7 @@ function App() {
             <StatusIndicator dbStatus={dbStatus} />
             <button 
               onClick={() => { checkHealth(); fetchSchema(); addLog('🔄 Refreshing connections...', 'info'); }}
-              className="p-1.5 hover:bg-white/5 text-[var(--text-muted)] hover:text-[var(--text-primary)] rounded-lg transition-colors border border-transparent hover:border-[var(--border-color)]"
+              className="p-1.5 hover:bg-[var(--tint)]/5 text-[var(--text-muted)] hover:text-[var(--text-primary)] rounded-lg transition-colors border border-transparent hover:border-[var(--border-color)]"
               title="Sync Status"
             >
               <RefreshCw size={14} />
@@ -378,7 +378,7 @@ function App() {
                   <button
                     onClick={triggerExport}
                     disabled={exportLoading}
-                    className="flex items-center justify-center gap-2 py-3 bg-[var(--accent-gold)] hover:bg-[var(--accent-gold-hover)] disabled:bg-white/[0.04] disabled:text-[var(--text-muted)] text-black font-semibold text-xs rounded-lg transition-all"
+                    className="flex items-center justify-center gap-2 py-3 bg-[var(--accent-gold)] hover:bg-[var(--accent-gold-hover)] disabled:bg-[var(--tint)]/4 disabled:text-[var(--text-muted)] text-[var(--on-accent)] font-semibold text-xs rounded-lg transition-all"
                   >
                     <span>Export Collection to CSV</span>
                   </button>
@@ -407,21 +407,21 @@ function App() {
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-col gap-1.5">
                     <span className="text-[10px] font-bold uppercase text-[var(--text-muted)]">Active Engine Target</span>
-                    <div className="p-2.5 bg-black/20 rounded border border-[var(--border-color)] text-xs font-mono text-[var(--accent-teal)]">
+                    <div className="p-2.5 bg-[var(--well)]/20 rounded border border-[var(--border-color)] text-xs font-mono text-[var(--accent-teal)]">
                       Llama-3.3-70b via Groq
                     </div>
                   </div>
 
                   <div className="flex flex-col gap-1.5">
                     <span className="text-[10px] font-bold uppercase text-[var(--text-muted)]">MongoDB URI</span>
-                    <div className="p-2.5 bg-black/20 rounded border border-[var(--border-color)] text-xs font-mono text-[var(--text-secondary)] truncate">
+                    <div className="p-2.5 bg-[var(--well)]/20 rounded border border-[var(--border-color)] text-xs font-mono text-[var(--text-secondary)] truncate">
                       mongodb://localhost:27017
                     </div>
                   </div>
 
                   <div className="flex flex-col gap-1.5">
                     <span className="text-[10px] font-bold uppercase text-[var(--text-muted)]">Local Server Endpoint</span>
-                    <div className="p-2.5 bg-black/20 rounded border border-[var(--border-color)] text-xs font-mono text-[var(--text-secondary)]">
+                    <div className="p-2.5 bg-[var(--well)]/20 rounded border border-[var(--border-color)] text-xs font-mono text-[var(--text-secondary)]">
                       http://localhost:3001
                     </div>
                   </div>

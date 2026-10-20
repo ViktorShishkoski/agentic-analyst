@@ -15,11 +15,11 @@ const TerminalWindow = ({ logs }) => {
   }, [logs]);
 
   return (
-    <div className="flex flex-col h-full bg-black/40 font-mono terminal-text overflow-hidden">
-      <div className="flex items-center gap-2 px-3 py-1.5 border-b border-white/5 bg-white/5 shrink-0">
+    <div className="flex flex-col h-full bg-[var(--well)]/40 font-mono terminal-text overflow-hidden">
+      <div className="flex items-center gap-2 px-3 py-1.5 border-b border-[var(--tint)]/5 bg-[var(--tint)]/5 shrink-0">
         <div className="flex gap-1.5">
           <div className="w-2 h-2 rounded-full bg-rose-500/50" />
-          <div className="w-2 h-2 rounded-full bg-amber-500/50" />
+          <div className="w-2 h-2 rounded-full bg-[var(--amber)]/50" />
           <div className="w-2 h-2 rounded-full bg-emerald-500/50" />
         </div>
         <span className="text-[9px] uppercase tracking-[0.2em] text-slate-500 ml-1">Node Sync Logs</span>

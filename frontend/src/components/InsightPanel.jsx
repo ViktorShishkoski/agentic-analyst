@@ -22,13 +22,13 @@ const InsightPanel = ({ insight }) => {
       const rows = tableLines.filter(l => !l.match(/^\|[\s|:-]+\|$/));
       if (rows.length > 0) {
         elements.push(
-          <div key={`table-${i}`} className="overflow-x-auto my-4 border border-[var(--border-color)] rounded-lg bg-black/10">
+          <div key={`table-${i}`} className="overflow-x-auto my-4 border border-[var(--border-color)] rounded-lg bg-[var(--well)]/10">
             <table className="w-full text-xs text-left border-collapse">
               <thead>
                 {rows.slice(0, 1).map((row, ri) => {
                   const cells = row.split('|').filter((_, ci) => ci > 0 && ci < row.split('|').length - 1);
                   return (
-                    <tr key={`th-${ri}`} className="border-b border-[var(--border-color)] bg-white/[0.02]">
+                    <tr key={`th-${ri}`} className="border-b border-[var(--border-color)] bg-[var(--tint)]/2">
                       {cells.map((cell, ci) => (
                         <th key={`th-cell-${ci}`} className="px-4 py-3 font-semibold text-[var(--accent-gold)] uppercase tracking-wider text-[10px]">
                           {cell.trim()}
@@ -42,7 +42,7 @@ const InsightPanel = ({ insight }) => {
                 {rows.slice(1).map((row, ri) => {
                   const cells = row.split('|').filter((_, ci) => ci > 0 && ci < row.split('|').length - 1);
                   return (
-                    <tr key={`tr-${ri}`} className="hover:bg-white/[0.01] transition-colors">
+                    <tr key={`tr-${ri}`} className="hover:bg-[var(--tint)]/1 transition-colors">
                       {cells.map((cell, ci) => (
                         <td key={`td-cell-${ci}`} className="px-4 py-2.5 text-[var(--text-secondary)] font-mono text-[11px]">
                           {cell.trim()}

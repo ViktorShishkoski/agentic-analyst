@@ -53,11 +53,11 @@ const UniversalSyntaxGuard = ({ discoveryData, onCopy }) => {
     };
 
     return (
-        <div className="flex flex-col h-full bg-[#1a1a1a] rounded-lg overflow-hidden border-2 border-[#ffaa00]">
+        <div className="flex flex-col h-full bg-[var(--guard-bg)] rounded-lg overflow-hidden border-2 border-[var(--warn)]">
             {/* Header */}
-            <div className="bg-[#ffaa00] px-3 py-1.5 flex items-center gap-2">
-                <ShieldAlert size={14} className="text-black" />
-                <span className="text-[10px] font-black uppercase tracking-widest text-black">
+            <div className="bg-[var(--warn)] px-3 py-1.5 flex items-center gap-2">
+                <ShieldAlert size={14} className="text-[var(--on-accent)]" />
+                <span className="text-[10px] font-black uppercase tracking-widest text-[var(--on-accent)]">
                     Universal Syntax Guard
                 </span>
             </div>
@@ -71,44 +71,44 @@ const UniversalSyntaxGuard = ({ discoveryData, onCopy }) => {
                     {topCols.map((col, idx) => (
                         <div key={idx} className="flex flex-col gap-1">
                             <div className="flex items-center justify-between">
-                                <span className="text-[#00ffff] font-bold">
+                                <span className="text-[var(--code-cyan)] font-bold">
                                     {col.name.includes('.') ? `[JSON] ${col.name}` : col.name}
                                 </span>
                                 <span className="text-[8px] text-slate-600">
                                     {col.isCategorical ? 'CAT' : 'RAW'}
                                 </span>
                             </div>
-                            <div className="text-[9px] text-slate-400 pl-2 border-l border-white/5">
+                            <div className="text-[9px] text-slate-400 pl-2 border-l border-[var(--tint)]/5">
                                 {col.values.slice(0, 3).join(', ')}
                             </div>
                         </div>
                     ))}
                     {topCols.some(c => c.name.includes('.')) && (
-                        <div className="text-[8px] text-amber-500 italic mt-2">
+                        <div className="text-[8px] text-[var(--amber)] italic mt-2">
                             * Dot-notation detected. Use 'parent.child' for nested JSON.
                         </div>
                     )}
                 </div>
 
                 {/* Prompt Blueprint */}
-                <div className="pt-2 border-t border-white/5">
-                    <div className="text-[8px] font-black uppercase text-[#ffaa00] tracking-tighter mb-2">
+                <div className="pt-2 border-t border-[var(--tint)]/5">
+                    <div className="text-[8px] font-black uppercase text-[var(--warn)] tracking-tighter mb-2">
                         PROMPT BLUEPRINT
                     </div>
-                    <div className="text-slate-300 leading-relaxed bg-black/40 p-2 rounded">
-                        Formula: <span className="text-[#00ffff]">[Column Name]</span> + <span className="text-[#00ffff]">[Specific Value]</span>
+                    <div className="text-[var(--guard-text)] leading-relaxed bg-[var(--well)]/40 p-2 rounded">
+                        Formula: <span className="text-[var(--code-cyan)]">[Column Name]</span> + <span className="text-[var(--code-cyan)]">[Specific Value]</span>
                     </div>
                 </div>
 
                 {/* Example */}
-                <div className="bg-black/60 p-2 rounded-lg border border-[#00ffff]/20 flex items-center justify-between gap-2 group">
+                <div className="bg-[var(--well)]/60 p-2 rounded-lg border border-[var(--code-cyan)]/20 flex items-center justify-between gap-2 group">
                     <div className="flex flex-col gap-1 flex-1">
                         <span className="text-[8px] text-slate-500 font-bold uppercase">Dynamic Example</span>
                         <span className="text-nexus-cyan truncate">"{examplePrompt}"</span>
                     </div>
                     <button 
                         onClick={handleCopy}
-                        className="p-1.5 hover:bg-[#00ffff] hover:text-black rounded transition-all text-nexus-cyan"
+                        className="p-1.5 hover:bg-[var(--code-cyan)] hover:text-[var(--on-accent)] rounded transition-all text-nexus-cyan"
                     >
                         {copied ? <Check size={14} /> : <Copy size={14} />}
                     </button>
